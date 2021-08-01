@@ -3,7 +3,7 @@ const { ApolloServer } = require("apollo-server-express");
 const path = require("path");
 // const routes = require('./routes');
 
-const { typeDefs, resolvers } = require("./schemas");
+const { typeDefs, resolvers } = require("./schema/index");
 const db = require("./config/connection");
 
 const PORT = process.env.PORT || 3001;
@@ -13,7 +13,14 @@ const server = new ApolloServer({
   resolvers,
 });
 
-server.applyMiddleware({ app });
+const serverStart = async () => {
+  await server.start();
+
+  server.applyMiddleware({ app });
+  return app;
+};
+
+serverStart();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
