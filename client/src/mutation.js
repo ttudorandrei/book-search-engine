@@ -13,4 +13,17 @@ const LOGIN = gql`
   }
 `;
 
-export default LOGIN;
+const SIGNUP = gql`
+  mutation Mutation($signupInput: SignupInput) {
+    signup(input: $signupInput) {
+      token
+      user {
+        _id
+        username
+        email
+      }
+    }
+  }
+`;
+
+export { LOGIN, SIGNUP };
