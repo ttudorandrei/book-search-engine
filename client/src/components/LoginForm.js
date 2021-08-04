@@ -3,9 +3,8 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 
-import { loginUser } from "../utils/API";
 import Auth from "../utils/auth";
-import LOGIN from "../mutation";
+import { LOGIN } from "../mutation";
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
