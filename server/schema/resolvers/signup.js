@@ -1,28 +1,39 @@
+const { AuthenticationError } = require("apollo-server-express");
 const User = require("../../models/User");
 const { signToken } = require("../../utils/auth");
 
 const signup = async (_, { input }) => {
-  const { firstName, lastName, email, password, username } = input;
+  const { email, password, username } = input;
 
-  const user = await User.create({
-    firstName,
-    lastName,
-    username,
-    email,
-    password,
-  });
+  const userAlreadyExists = await User.findOne({ email });
 
-  const token = signToken({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    username: user.username,
-    email: user.email,
-  });
+  if (!userAlreadyExists) {
+    const user = await User.create({
+      username,
+      email,
+      password,
+    });
 
-  return {
-    token,
-    user,
-  };
+    if (!user) {
+      throw new AuthenticationError(
+        "Oops! There was an error! Please try again!"
+      );
+    }
+
+    const token = signToken({
+      username: user.username,
+      email: user.email,
+    });
+
+    return {
+      token,
+      user,
+    };
+  } else {
+    throw new AuthenticationError(
+      "Oops! There already exists a user with these credentials"
+    );
+  }
 };
 
 module.exports = signup;
