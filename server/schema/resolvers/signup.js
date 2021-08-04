@@ -1,17 +1,23 @@
-const { User } = require("../../models/User");
-const { signToken } = require("../utils/auth");
+const User = require("../../models/User");
+const { signToken } = require("../../utils/auth");
 
-const addUser = async (_, { input }) => {
-  const user = await User.create(input);
+const signup = async (_, { input }) => {
+  const { firstName, lastName, email, password, username } = input;
 
-  const {
-    firstName = "Tudor",
-    lastName = "Tocan",
-    email = "tudortocan@email.com",
-    _id: id,
-  } = user;
+  const user = await User.create({
+    firstName,
+    lastName,
+    username,
+    email,
+    password,
+  });
 
-  const token = signToken({ firstName, lastName, email, id });
+  const token = signToken({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    username: user.username,
+    email: user.email,
+  });
 
   return {
     token,
@@ -19,4 +25,4 @@ const addUser = async (_, { input }) => {
   };
 };
 
-module.exports = addUser;
+module.exports = signup;
