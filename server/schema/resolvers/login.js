@@ -23,8 +23,7 @@ const login = async (_, { input }) => {
   }
 
   const token = signToken({
-    firstName: user.firstName,
-    lastName: user.lastName,
+    id: user.id,
     username: user.username,
     email: user.email,
   });
