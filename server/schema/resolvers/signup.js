@@ -21,6 +21,7 @@ const signup = async (_, { input }) => {
     }
 
     const token = signToken({
+      id: user.id,
       username: user.username,
       email: user.email,
     });

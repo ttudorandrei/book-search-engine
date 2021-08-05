@@ -15,7 +15,7 @@ const context = ({ req }) => {
   try {
     req.user = verifyToken(token);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     throw new AuthenticationError("Invalid token");
   }
 
