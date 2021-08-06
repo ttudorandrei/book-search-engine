@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import {
   Jumbotron,
   Container,
@@ -9,39 +9,35 @@ import {
 } from "react-bootstrap";
 
 import { GET_USER } from "../queries";
+import { DELETE_BOOK } from "../mutation";
 
 const SavedBooks = () => {
-  // use query hook for the me query and get the data, error and loading state from graphQL
+  // use query hook for the GET_USER query and get the data, error and loading state from graphQL
   const { data, error, loading } = useQuery(GET_USER);
 
-  console.log(data);
+  // use mutation hook for the removeBook mutation and pass functions to handle success and error
+  const [removeBook] = useMutation(DELETE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
-    // const token = Auth.loggedIn() ? Auth.getToken() : null;
-    // if (!token) {
-    //   return false;
-    // }
-    // try {
-    //   const response = await deleteBook(bookId, token);
-    //   if (!response.ok) {
-    //     throw new Error("something went wrong!");
-    //   }
-    //   const updatedUser = await response.json();
-    //   setUserData(updatedUser);
-    //   // upon success, remove book's id from localStorage
-    //   removeBookId(bookId);
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    try {
+      await removeBook({
+        variables: {
+          removeBookBookId: bookId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  // if state is loading
+  // if it's loading render a loading div
+
   if (loading) {
     return <h2>LOADING...</h2>;
   }
 
-  // if state is error
+  // if there's an error render an error div
   if (error) {
     return <h2>ERROR...</h2>;
   }
