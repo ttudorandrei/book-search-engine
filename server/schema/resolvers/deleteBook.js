@@ -1,11 +1,9 @@
 const { User } = require("../../models");
 
-const deleteBook = async (_, args, context) => {
-  console.log("from deleteBook resolver", context.user);
-
+const deleteBook = async (_, { bookId }, context) => {
   return await User.findOneAndUpdate(
     { _id: context.user.id },
-    { $pull: { savedBooks: { bookId: "kTH6zAEACAAJ" } } },
+    { $pull: { savedBooks: { bookId } } },
     { new: true }
   );
 };
