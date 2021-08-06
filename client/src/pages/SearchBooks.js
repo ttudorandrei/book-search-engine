@@ -77,6 +77,8 @@ const SearchBooks = () => {
         },
       });
 
+      console.log(bookToSave);
+
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);

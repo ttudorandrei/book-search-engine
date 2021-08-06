@@ -1,4 +1,3 @@
-const Book = require("./book");
 const me = require("./user");
 const signup = require("./signup");
 const login = require("./login");
@@ -7,7 +6,6 @@ const removeBook = require("./deleteBook");
 
 const resolvers = {
   Query: {
-    // Book,
     me,
   },
 

@@ -1,19 +1,19 @@
 const User = require("../../models/User");
 
 const saveBook = async (_, { input }, context) => {
-  const { authors, description, title, bookId, image, link } = input;
+  const { id } = context.user;
 
   const bookToSave = await User.findOneAndUpdate(
-    { _id: context.user.id },
+    id,
     {
-      $set: {
-        savedBooks: { authors, description, title, bookId, image, link },
+      $push: {
+        savedBooks: input,
       },
     },
     { new: true, runValidators: true }
-  );
+  ).populate("savedBooks");
 
-  return { bookToSave };
+  return bookToSave;
 };
 
 module.exports = saveBook;
