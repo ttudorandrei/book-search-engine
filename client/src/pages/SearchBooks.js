@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useMutation } from "@apollo/client";
+
 import {
   Jumbotron,
   Container,
@@ -10,9 +12,8 @@ import {
 } from "react-bootstrap";
 
 import Auth from "../utils/auth";
-import { saveBook, searchGoogleBooks } from "../utils/API";
+import { searchGoogleBooks } from "../utils/API";
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
-import { useMutation } from "@apollo/client";
 import { SAVE_BOOK } from "../mutation";
 
 const SearchBooks = () => {
@@ -21,13 +22,13 @@ const SearchBooks = () => {
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
 
+  // use mutation hook for the login mutation and pass functions to handle success and error
+  const [saveBook] = useMutation(SAVE_BOOK);
+
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-  const [saveBook] = useMutation(SAVE_BOOK);
-
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
-  // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
   });
@@ -69,19 +70,14 @@ const SearchBooks = () => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
-    console.log(bookToSave);
-
-    const saveBookInput = {
-      bookId: bookToSave.bookId,
-      authors: bookToSave.authors,
-      title: bookToSave.title,
-      description: bookToSave.description,
-      image: bookToSave.image,
-      link: bookToSave.link,
-    };
-
     try {
-      saveBook({ variables: { saveBookInput: { ...saveBookInput } } });
+      await saveBook({
+        variables: {
+          saveBookInput: bookToSave,
+        },
+      });
+
+      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
     }
