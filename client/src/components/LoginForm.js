@@ -1,5 +1,5 @@
 // see SignupForm.js for comments
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 
@@ -11,7 +11,8 @@ const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  const [login, { loading, error, data }] = useMutation(LOGIN, {
+  // use mutation hook for the login mutation and pass functions to handle success and error
+  const [login] = useMutation(LOGIN, {
     onCompleted: (data) => {
       const { token, user } = data.login;
       console.log(user);
@@ -38,9 +39,11 @@ const LoginForm = () => {
       event.stopPropagation();
     }
 
+    // try to login using the input data from the user
     try {
       await login({ variables: { loginInput: userFormData } });
     } catch (err) {
+      // if the login fails we console log the error
       console.error(err);
       setShowAlert(true);
     }

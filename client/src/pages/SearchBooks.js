@@ -22,7 +22,7 @@ const SearchBooks = () => {
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
 
-  // use mutation hook for the login mutation and pass functions to handle success and error
+  // use mutation hook for saving a book
   const [saveBook] = useMutation(SAVE_BOOK);
 
   // create state to hold saved bookId values
@@ -76,8 +76,6 @@ const SearchBooks = () => {
           saveBookInput: bookToSave,
         },
       });
-
-      console.log(bookToSave);
 
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {

@@ -1,9 +1,8 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 
 import { SIGNUP } from "../mutation";
-import { createUser } from "../utils/API";
 import Auth from "../utils/auth";
 
 const SignupForm = () => {
@@ -18,7 +17,7 @@ const SignupForm = () => {
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
-  const [signup, { loading, error, data }] = useMutation(SIGNUP, {
+  const [signup] = useMutation(SIGNUP, {
     onCompleted: (data) => {
       const { token, user } = data.signup;
       console.log(user);
@@ -45,9 +44,11 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
+    //if the signup is successful the user will be added to the database
     try {
       await signup({ variables: { signupInput: userFormData } });
     } catch (err) {
+      // if the signup is unsuccessful, an error will be thrown and displayed in the console
       console.error(err);
       setShowAlert(true);
     }

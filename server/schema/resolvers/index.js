@@ -13,5 +13,3 @@ const resolvers = {
 };
 
 module.exports = resolvers;
-
-// 610ac5f666ff620464b333bc
