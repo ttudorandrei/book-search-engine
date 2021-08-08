@@ -1,11 +1,16 @@
 const { User } = require("../../models");
 
+// we target find a specific user containing a specific book id and we remove that book id from the "savedBooks" array
 const deleteBook = async (_, { bookId }, context) => {
-  return await User.findOneAndUpdate(
-    { _id: context.user.id },
-    { $pull: { savedBooks: { bookId } } },
-    { new: true }
-  );
+  try {
+    return await User.findOneAndUpdate(
+      { _id: context.user.id },
+      { $pull: { savedBooks: { bookId } } },
+      { new: true }
+    );
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 module.exports = deleteBook;
