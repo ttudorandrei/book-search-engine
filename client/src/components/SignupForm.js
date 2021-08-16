@@ -20,11 +20,10 @@ const SignupForm = () => {
   const [signup] = useMutation(SIGNUP, {
     onCompleted: (data) => {
       const { token, user } = data.signup;
-      console.log(user);
       Auth.login(token);
     },
     onerror: (error) => {
-      console.log(error.message);
+      console.error(error.message);
       throw new Error("something went wrong!");
     },
   });
@@ -46,7 +45,7 @@ const SignupForm = () => {
 
     //if the signup is successful the user will be added to the database
     try {
-      await signup({ variables: { signupInput: userFormData } });
+      await signup({ variables: { SignupInput: userFormData } });
     } catch (err) {
       // if the signup is unsuccessful, an error will be thrown and displayed in the console
       console.error(err);

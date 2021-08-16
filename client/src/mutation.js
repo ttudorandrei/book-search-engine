@@ -8,15 +8,14 @@ const LOGIN = gql`
       user {
         _id
         email
-        username
       }
     }
   }
 `;
 
 const SIGNUP = gql`
-  mutation Mutation($signupInput: SignupInput) {
-    signup(input: $signupInput) {
+  mutation Mutation($SignupInput: SignupInput!) {
+    signup(input: $SignupInput) {
       token
       user {
         _id
@@ -28,7 +27,7 @@ const SIGNUP = gql`
 `;
 
 const SAVE_BOOK = gql`
-  mutation Mutation($saveBookInput: SaveBookInput) {
+  mutation Mutation($saveBookInput: SaveBookInput!) {
     saveBook(input: $saveBookInput) {
       _id
       email

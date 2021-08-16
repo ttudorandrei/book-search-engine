@@ -1,4 +1,4 @@
-const User = require("../../models/User");
+const { User } = require("../../models");
 
 const saveBook = async (_, { input }, context) => {
   // we destructure the user id from the context
@@ -7,7 +7,7 @@ const saveBook = async (_, { input }, context) => {
   // we try to find the user and update the savedBooks field, adding the required fields to it
   try {
     return await User.findOneAndUpdate(
-      id,
+      { _id: id },
       {
         $push: {
           savedBooks: input,

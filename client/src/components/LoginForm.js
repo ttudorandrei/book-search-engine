@@ -15,11 +15,10 @@ const LoginForm = () => {
   const [login] = useMutation(LOGIN, {
     onCompleted: (data) => {
       const { token, user } = data.login;
-      console.log(user);
       Auth.login(token);
     },
     onerror: (error) => {
-      console.log(error.message);
+      console.error(error.message);
       throw new Error("something went wrong!");
     },
   });
@@ -49,7 +48,6 @@ const LoginForm = () => {
     }
 
     setUserFormData({
-      username: "",
       email: "",
       password: "",
     });
